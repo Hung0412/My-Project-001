@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System.Collections;
 public class PlayerCombat : MonoBehaviour
 {
     //REFERENCEs
@@ -24,7 +25,7 @@ public class PlayerCombat : MonoBehaviour
     //[HideInInspector]
     public List<Collider2D> hitEnemiesList;
     public bool dangerDetect = false;
-
+    public bool canDamage = true;
     private void Start()
     {
         characterData = GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterDataReference>().characterData;
@@ -137,6 +138,13 @@ public class PlayerCombat : MonoBehaviour
         {
             DestroyCharacter();
         }
+        else StartCoroutine(DelayDamage());
+    }
+    private IEnumerator DelayDamage()
+    {
+        canDamage = false;
+        yield return new WaitForSeconds(2);
+        canDamage = true;
     }
     private void PushPlayer(Collision2D collision)
     {

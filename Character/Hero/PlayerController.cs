@@ -337,7 +337,6 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Q) && isCrouching == true && isRolling == false && isOnGround == true && playerCombat.hasCollided == false && playerCombat.isPushingAway == false && playerCombatController.hasCrouchKicked == false)
         {
-            Debug.Log("s");
             isRolling = true;
             animator.SetBool(nameof(isRolling), true);
             gameObject.GetComponent<BoxCollider2D>().enabled = false;
