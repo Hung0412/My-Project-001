@@ -3,18 +3,14 @@ using UnityEngine;
 using System.Collections;
 public class PlayerCombat : MonoBehaviour
 {
-    //REFERENCEs
     private CharacterData characterData;
     private GameObject[] destroyedWithPlayer;
-
     private Animator animator;
     private Rigidbody2D rb2D;
     private PlayerController playerController;
     private PlayerCombatController playerCombatController;
     private EffectController effectController;
     public GameObject hurtEffectPrefab;
-
-    //VARIABLES
     public float pushForce;
     private GameObject spawnedObject;
     private bool hasSpawned = false;
@@ -39,9 +35,48 @@ public class PlayerCombat : MonoBehaviour
     }
     private void Update()
     {
-        //Debug.Log(rb2D.velocity);
         SetConditionsDependOnIsPushingAway();
     }
+    #region Player's OnCollision and OnTrigger functions
+    private void OnCollisionStay2D(Collision2D other)
+    {
+        if (other.gameObject.CompareTag("Enemy") && hasCollided == false)
+        {
+            isPushingAway = true;
+            hasCollided = true;
+            DamageCharacter(other);
+            PushPlayer(other);
+        }
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if ((collision.gameObject.CompareTag("Enemy") && isPushingAway == false
+            && playerCombatController.hasPunched == false && playerCombatController.hasKicked == false
+            && playerCombatController.hasFlyKicked == false && playerCombatController.hasFlyingKicked == false
+            && playerCombatController.hasCrouchKicked == false)
+
+            || (collision.gameObject.CompareTag("Enemy")
+            && playerController.facingVal * collision.gameObject.GetComponent<Rigidbody2D>().velocity.x > 0
+
+                && (playerCombatController.hasPunched == true || playerCombatController.hasKicked == true
+                || playerCombatController.hasFlyKicked == true || playerCombatController.hasFlyingKicked == true
+                || playerCombatController.hasCrouchKicked == true)))
+        {
+            isPushingAway = true;
+            hasCollided = true;
+            DamageCharacter(collision);
+            PushPlayer(collision);
+        }
+    }
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            hasCollided = false;
+        }
+    }
+    #endregion
+    #region Player's Attack functions
     public void Attack1(Transform attackPoint, float attackRange, LayerMask characterLayers)
     {
         hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, characterLayers);
@@ -89,47 +124,9 @@ public class PlayerCombat : MonoBehaviour
             }
         }
     }
-    private void OnCollisionStay2D(Collision2D other)
-    {
-        if (other.gameObject.CompareTag("Enemy") && hasCollided == false)
-        {
-            isPushingAway = true;
-            hasCollided = true;
-            DamageCharacter(other);
-            PushPlayer(other);
-        }
-    }
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if ((collision.gameObject.CompareTag("Enemy") && isPushingAway == false
-            && playerCombatController.hasPunched == false && playerCombatController.hasKicked == false
-            && playerCombatController.hasFlyKicked == false && playerCombatController.hasFlyingKicked == false
-            && playerCombatController.hasCrouchKicked == false)
-
-            || (collision.gameObject.CompareTag("Enemy")
-            && playerController.facingVal * collision.gameObject.GetComponent<Rigidbody2D>().velocity.x > 0
-
-                && (playerCombatController.hasPunched == true || playerCombatController.hasKicked == true
-                || playerCombatController.hasFlyKicked == true || playerCombatController.hasFlyingKicked == true
-                || playerCombatController.hasCrouchKicked == true)))
-        {
-            isPushingAway = true;
-            //SpawnHurtEffect();
-
-            hasCollided = true;
-            DamageCharacter(collision);
-            PushPlayer(collision);
-
-            //playerCombatController.RemoveHitEnemiesFromList();
-        }
-    }
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Enemy"))
-        {
-            hasCollided = false;
-        }
-    }
+    #endregion
+    #region Player's functions when being damaged
+        #region Adjust player health value
     public void DamageCharacter(Collision2D collision)
     {
         EnemyData enemyData = collision.gameObject.GetComponent<EnemyData>();
@@ -146,6 +143,8 @@ public class PlayerCombat : MonoBehaviour
         yield return new WaitForSeconds(2);
         canDamage = true;
     }
+        #endregion
+        #region Push Player away when collide with enemy
     private void PushPlayer(Collision2D collision)
     {
         pushForce = collision.gameObject.GetComponent<EnemyData>().PushForce;
@@ -191,6 +190,8 @@ public class PlayerCombat : MonoBehaviour
             }
         }
     }
+        #endregion
+        #region Spawn Hurt Effects when being attacked
     private void SpawnHurtEffect()
     {
         if (hasSpawned == false)
@@ -210,6 +211,8 @@ public class PlayerCombat : MonoBehaviour
             isPushingAway = false;
         }
     }
+        #endregion
+        #region Destroy Player when Health Value equal 0
     public void DestroyCharacter()
     {
         gameObject.SetActive(false);
@@ -222,4 +225,6 @@ public class PlayerCombat : MonoBehaviour
         UnityEditor.EditorApplication.isPlaying = false;
 #endif
     }
+        #endregion
+    #endregion
 }
