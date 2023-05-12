@@ -21,7 +21,7 @@ public class PickupObjects : MonoBehaviour
             Item hitObject = collision.gameObject.GetComponent<ItemReference>().item;
             if (hitObject != null)
             {
-                switch (hitObject.itemType)
+                switch (hitObject._ItemType)
                 {
                     case Item.ItemType.COIN:
                         break;
