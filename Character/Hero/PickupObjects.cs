@@ -26,6 +26,7 @@ public class PickupObjects : MonoBehaviour
                     case Item.ItemType.COIN:
                         break;
                     case Item.ItemType.HEALTH:
+                        characterData.HealthValue = 10;
                         AdjustHealthValue(characterData.HealthValue);
                         Destroy(collision.gameObject);
                         break;

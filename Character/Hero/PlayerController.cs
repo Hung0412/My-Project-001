@@ -387,9 +387,10 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R) && characterData.CurrentHealingChargeValue == characterData.MaxHealingChargeValue
         && isOnGround == true && playerCombatController.hasPunched == false && playerCombatController.hasKicked == false)
         {
+            characterData.HealthValue=30;
             isHealing = true;
             animator.SetBool(nameof(isHealing), true);
-            characterData.CurrentHealthValue += 30;
+            characterData.CurrentHealthValue += characterData.HealthValue;
             characterData.CurrentHealingChargeValue = 0;
             Invoke(nameof(SetIsHealingToFalse), 1f);
         }
