@@ -65,7 +65,7 @@ public class PlayerController : MonoBehaviour
 
         // Find and get references to the EffectController game object and the bloom volume game object
         effectController = GameObject.Find("----Game Master----").GetComponent<EffectController>();
-        bloomVolume = GameObject.Find("Volume");
+        bloomVolume = GameObject.Find("Player Run Volume");
 
         // Set up the player's runningTimer and nextRunningTimer
         runningTimer = Time.time;
