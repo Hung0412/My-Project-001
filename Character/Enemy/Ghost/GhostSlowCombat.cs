@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class GhostSlowCombat : EnemyCombat
 {
+    private GameObject ghostSlowBloomVolume;
     private SpriteRenderer spriteRenderer;
     public Transform attackPoint;
     public float attackRange;
@@ -19,6 +20,7 @@ public class GhostSlowCombat : EnemyCombat
         animator = gameObject.GetComponent<Animator>();
         playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
         spriteRenderer = player.GetComponent<SpriteRenderer>();
+        ghostSlowBloomVolume = GameObject.Find("Ghost Slow Volume");
     }
 
     // Update is called once per frame
@@ -48,7 +50,7 @@ public class GhostSlowCombat : EnemyCombat
             hasAttacked = false;
             animator.SetBool(nameof(hasAttacked), false);
 
-            spriteRenderer.color = Color.white;
+            ghostSlowBloomVolume.gameObject.SetActive(false);
             playerController.walksSpeed = 7;
             playerController.runSpeed = 15;
         }
@@ -59,7 +61,7 @@ public class GhostSlowCombat : EnemyCombat
                 hasAttacked = true;
                 animator.SetBool(nameof(hasAttacked), true);
 
-                spriteRenderer.color = Color.magenta;
+                ghostSlowBloomVolume.gameObject.SetActive(true);
                 playerController.walksSpeed = 3;
                 playerController.runSpeed = 10;
             }
@@ -67,7 +69,7 @@ public class GhostSlowCombat : EnemyCombat
     }
     private void OnDestroy()
     {
-        spriteRenderer.color = Color.white;
+        ghostSlowBloomVolume.gameObject.SetActive(false);
         playerController.walksSpeed = 7;
         playerController.runSpeed = 15;
     }
