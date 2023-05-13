@@ -25,10 +25,7 @@ public class EnemyData : MonoBehaviour
         get { return currentHealthValue; }
         set
         {
-            if (value < 0)
-            {
-                throw new ArgumentException("Value cannot be negative");
-            }
+           
             currentHealthValue = Mathf.Max(0, Mathf.Min(value, MaxHealthValue));
         }
     }
