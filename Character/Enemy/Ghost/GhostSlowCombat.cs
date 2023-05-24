@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class GhostSlowCombat : EnemyCombat
 {
+    private BoxCollider2D boxCollider2D;
     private GameObject ghostSlowBloomVolume;
     private SpriteRenderer spriteRenderer;
     public Transform attackPoint;
@@ -17,10 +18,15 @@ public class GhostSlowCombat : EnemyCombat
         enemyData.InvokeEnemyData(10, 10, 0, 0.5f, 10, true, EnemyData.MonsterType.GHOST_SLOW);
 
         player = GameObject.FindWithTag("Player");
+        rb2D = gameObject.GetComponent<Rigidbody2D>();
+
         animator = gameObject.GetComponent<Animator>();
         playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
+        playerCombat = GameObject.FindWithTag("Player").GetComponent<PlayerCombat>();
         spriteRenderer = player.GetComponent<SpriteRenderer>();
         ghostSlowBloomVolume = GameObject.Find("Ghost Slow Volume");
+        boxCollider2D = gameObject.GetComponent<BoxCollider2D>();
+
     }
 
     // Update is called once per frame

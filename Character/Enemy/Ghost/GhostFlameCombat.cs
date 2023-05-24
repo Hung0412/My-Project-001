@@ -27,6 +27,7 @@ public class GhostFlameCombat : EnemyCombat
         animator = gameObject.GetComponent<Animator>();
 
         player = GameObject.FindWithTag("Player");
+        rb2D = gameObject.GetComponent<Rigidbody2D>();
         spriteRenderer = player.gameObject.GetComponent<SpriteRenderer>();
         characterData = player.GetComponent<CharacterDataReference>().characterData;
         playerController = player.GetComponent<PlayerController>();
