@@ -4,7 +4,7 @@ public class SpawnCharacter : MonoBehaviour
 {
     private PlayerController playerController;
     private CharacterData characterData;
-    private CinemachineVirtualCamera virtualCamera;
+    private GameObject mainCam;
     private GameObject spotLight2D;
     public GameObject prefabToSpawn;
     private GameObject spawnedObject;
@@ -13,7 +13,7 @@ public class SpawnCharacter : MonoBehaviour
     {
         spawnedObject = Instantiate(prefabToSpawn, gameObject.transform.position, Quaternion.identity);
         spawnedObject.transform.position = gameObject.transform.position;
-        virtualCamera = GameObject.Find("CM vcam1").GetComponent<CinemachineVirtualCamera>();
+        mainCam = GameObject.FindWithTag("MainCamera");
         spotLight2D = GameObject.Find("Spot Light 2D");
     }
     private void Start()
@@ -22,17 +22,16 @@ public class SpawnCharacter : MonoBehaviour
         characterData.InvokeCharacterData(100, 100, 10, 0, 10, 20);
 
         playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
-        CamFollowPlayer();
     }
     // Update is called once per frame
     void Update()
     {
+        CamFollowPlayer();
         SpotLightFollowPlayer();
     }
     private void CamFollowPlayer()
     {
-        virtualCamera.Follow = spawnedObject.transform;
-        //virtualCamera.LookAt = spawnedObject.transform;
+        mainCam.transform.position = spawnedObject.transform.position + new Vector3(0, 8.5f, -40);
     }
     private void SpotLightFollowPlayer()
     {
