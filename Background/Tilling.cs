@@ -2,10 +2,11 @@ using UnityEngine;
 
 public class Tilling : MonoBehaviour
 {
-    //REFERENCES
+    // REFERENCES
     private Camera cam;
     private SpriteRenderer backgroundSRenderer;
-    //VARIABLES
+
+    // VARIABLES
     public float offsetX = 2f;
     public bool hasALeftBuddy = false;
     public bool hasARightBuddy = false;
@@ -14,7 +15,7 @@ public class Tilling : MonoBehaviour
     private float camHorizontalExtend;
 
     private Parallaxing parallaxing;
-    // Start is called before the first frame update
+
     void Start()
     {
         cam = Camera.main;
@@ -25,49 +26,51 @@ public class Tilling : MonoBehaviour
         parallaxing = GameObject.Find("Backgrounds").GetComponent<Parallaxing>();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (hasALeftBuddy == false || hasARightBuddy == false)
+        if (!hasALeftBuddy || !hasARightBuddy)
         {
             camHorizontalExtend = cam.orthographicSize * Screen.width / Screen.height;
-            float edgeVisiblePosRight = backgroundWidth / 2 - (cam.transform.position.x - backgroundSRenderer.transform.position.x) - camHorizontalExtend;
-            float edgeVisiblePosLeft = -backgroundWidth / 2 - (cam.transform.position.x - backgroundSRenderer.transform.position.x) + camHorizontalExtend;
-            if (edgeVisiblePosRight <= offsetX && hasARightBuddy == false)
+            float edgeVisiblePosRight = backgroundWidth * 0.5f - camHorizontalExtend + backgroundSRenderer.transform.position.x - cam.transform.position.x;
+            float edgeVisiblePosLeft = -backgroundWidth * 0.5f + camHorizontalExtend + backgroundSRenderer.transform.position.x - cam.transform.position.x;
+
+            if (edgeVisiblePosRight <= offsetX && !hasARightBuddy)
             {
-                MakeNewBackGround();
+                MakeNewBackGround(true);
                 hasARightBuddy = true;
             }
-            else if (edgeVisiblePosLeft >= -offsetX && hasALeftBuddy == false)
+            else if (edgeVisiblePosLeft >= -offsetX && !hasALeftBuddy)
             {
-                MakeNewBackGround();
+                MakeNewBackGround(false);
                 hasALeftBuddy = true;
             }
         }
     }
-    void MakeNewBackGround()
+
+    void MakeNewBackGround(bool isRightBuddy)
     {
-        if (gameObject.transform.position.x >= 0)
+        float offset = isRightBuddy ? backgroundWidth : -backgroundWidth;
+        Vector3 newBackgroundPos = new Vector3(transform.position.x + offset, transform.position.y, transform.position.z);
+        GameObject newBackground = Instantiate(gameObject, newBackgroundPos, Quaternion.Euler(0, 180, 0));
+        Tilling newTiling = newBackground.GetComponent<Tilling>();
+
+        if (isRightBuddy)
         {
-            Vector2 newBackgroundPos = new Vector2(gameObject.transform.position.x + backgroundWidth, gameObject.transform.position.y);
-            GameObject newBackground = Instantiate(gameObject, newBackgroundPos, Quaternion.Euler(0, 180, 0));
-            newBackground.GetComponent<Tilling>().hasALeftBuddy = true;
-            newBackground.transform.parent = gameObject.transform.parent;
-            SetUpNewBackgrWithParallaxing(newBackground);
+            newTiling.hasALeftBuddy = true;
         }
-        else if (gameObject.transform.position.x < 0)
+        else
         {
-            Vector2 newBackgroundPos = new Vector2(gameObject.transform.position.x - backgroundWidth, gameObject.transform.position.y);
-            GameObject newBackground = Instantiate(gameObject, newBackgroundPos, Quaternion.Euler(0, 180, 0));
-            newBackground.GetComponent<Tilling>().hasARightBuddy = true;
-            newBackground.transform.parent = gameObject.transform.parent;
-            SetUpNewBackgrWithParallaxing(newBackground);
+            newTiling.hasARightBuddy = true;
         }
+
+        newBackground.transform.parent = transform.parent;
+        SetUpNewBackgroundWithParallaxing(newBackground);
     }
-    private void SetUpNewBackgrWithParallaxing(GameObject newBackground)
+
+    void SetUpNewBackgroundWithParallaxing(GameObject newBackground)
     {
         float newBackgroundPosZ = newBackground.transform.position.z;
-        newBackgroundPosZ = gameObject.transform.position.z;
+        newBackgroundPosZ = transform.position.z;
         parallaxing.backgroundsList.Add(newBackground);
         parallaxing.parallaxScaleList.Add(newBackgroundPosZ);
     }
