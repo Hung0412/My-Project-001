@@ -58,17 +58,22 @@ public class SkeletonCombat : EnemyCombat
     }
     private void Attack_FollowCharacter()
     {
-        if (boxCollider2D.isTrigger == false && playerController.isOnGround == true)
+        if (playerController.isRolling == false)
         {
-            hasAttacked = true;
-            animator.SetBool(nameof(hasAttacked), true);
-            Vector2 direction = player.transform.position - transform.position;
-            rb2D.velocity = new Vector2(direction.x, 0).normalized * moveForce;
+            if (boxCollider2D.isTrigger == false && playerController.isOnGround == true)
+            {
+                hasAttacked = true;
+                animator.SetBool(nameof(hasAttacked), true);
+                Vector2 direction = player.transform.position - transform.position;
+                rb2D.velocity = new Vector2(direction.x, 0).normalized * moveForce;
+            }
+            else if (boxCollider2D.isTrigger == true)
+            {
+                rb2D.gravityScale = 0;
+                rb2D.constraints = RigidbodyConstraints2D.FreezePosition;
+                rb2D.constraints = RigidbodyConstraints2D.FreezeRotation;
+            }
         }
-        else if (boxCollider2D.isTrigger == true)
-        {
-            rb2D.constraints = RigidbodyConstraints2D.FreezePosition;
-            rb2D.constraints = RigidbodyConstraints2D.FreezeRotation;
-        }
+
     }
 }
