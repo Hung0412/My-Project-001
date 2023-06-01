@@ -11,7 +11,6 @@ public class SkeletonCombat : EnemyCombat
         CheckReferences();
         enemyData.InvokeEnemyData(20, 20, 10, 1, 10, true, EnemyData.MonsterType.SKELETON);
         boxCollider2D = gameObject.GetComponent<BoxCollider2D>();
-
     }
 
     // Update is called once per frame
