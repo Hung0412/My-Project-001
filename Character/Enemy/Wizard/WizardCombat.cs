@@ -14,12 +14,8 @@ public class WizardCombat : EnemyCombat
     // Start is called before the first frame update
     void Start()
     {
-        enemyData = gameObject.GetComponent<EnemyData>();
+        CheckReferences();
         enemyData.InvokeEnemyData(60, 60, 10, 0.7f, 10, true, EnemyData.MonsterType.WIZARD);
-
-        player = GameObject.FindWithTag("Player");
-        playerCombat = GameObject.FindWithTag("Player").GetComponent<PlayerCombat>();
-        animator = gameObject.GetComponent<Animator>();
         fireTimer = fireResetTime;
     }
 

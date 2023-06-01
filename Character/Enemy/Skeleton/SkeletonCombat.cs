@@ -8,14 +8,8 @@ public class SkeletonCombat : EnemyCombat
     // Start is called before the first frame update
     void Start()
     {
-        enemyData = gameObject.GetComponent<EnemyData>();
+        CheckReferences();
         enemyData.InvokeEnemyData(20, 20, 10, 1, 10, true, EnemyData.MonsterType.SKELETON);
-
-        playerCombat = GameObject.FindWithTag("Player").GetComponent<PlayerCombat>();
-        playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
-        animator = gameObject.GetComponent<Animator>();
-        rb2D = gameObject.GetComponent<Rigidbody2D>();
-        player = GameObject.FindGameObjectWithTag("Player");
         boxCollider2D = gameObject.GetComponent<BoxCollider2D>();
 
     }

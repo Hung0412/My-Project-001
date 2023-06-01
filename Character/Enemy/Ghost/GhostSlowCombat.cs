@@ -14,19 +14,11 @@ public class GhostSlowCombat : EnemyCombat
     // Start is called before the first frame update
     void Start()
     {
-        enemyData = gameObject.GetComponent<EnemyData>();
+        CheckReferences();
         enemyData.InvokeEnemyData(10, 10, 0, 0.5f, 10, true, EnemyData.MonsterType.GHOST_SLOW);
-
-        player = GameObject.FindWithTag("Player");
-        rb2D = gameObject.GetComponent<Rigidbody2D>();
-
-        animator = gameObject.GetComponent<Animator>();
-        playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
-        playerCombat = GameObject.FindWithTag("Player").GetComponent<PlayerCombat>();
         spriteRenderer = player.GetComponent<SpriteRenderer>();
         ghostSlowBloomVolume = GameObject.Find("Ghost Slow Volume");
         boxCollider2D = gameObject.GetComponent<BoxCollider2D>();
-
     }
 
     // Update is called once per frame

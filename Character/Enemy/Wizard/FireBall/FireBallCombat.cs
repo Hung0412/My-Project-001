@@ -7,18 +7,9 @@ public class FireBallCombat : EnemyCombat
     // Start is called before the first frame update
     void Start()
     {
-        enemyData = gameObject.GetComponent<EnemyData>();
+        CheckReferences();
         enemyData.InvokeEnemyData(10, 10, 10, 0.5f, 10, false, EnemyData.MonsterType.WIZARD_FIREBALL);
-
-        playerCombat = GameObject.FindWithTag("Player").GetComponent<PlayerCombat>();
-        animator = gameObject.GetComponent<Animator>();
-
-        player = GameObject.FindGameObjectWithTag("Player");
-        rb2D = GetComponent<Rigidbody2D>();
         circleCollider = GetComponent<CircleCollider2D>();
-
-        playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
-        playerCombatController = GameObject.FindWithTag("Player").GetComponent<PlayerCombatController>();
     }
 
     // Update is called once per frame

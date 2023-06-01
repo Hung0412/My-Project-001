@@ -1,6 +1,5 @@
 using UnityEngine;
-using System.Collections;
-public abstract class EnemyCombat : MonoBehaviour
+public abstract class EnemyCombat : MonoBehaviour, EnemyCombatInterface
 {
     //REFERENCES
     protected GameObject player;
@@ -13,6 +12,17 @@ public abstract class EnemyCombat : MonoBehaviour
     //VARIABLES
     public bool isDying = false;
     public bool isFacingCharacter = false;
+
+    public virtual void CheckReferences()
+    {
+        player = GameObject.FindWithTag("Player");
+        enemyData = gameObject.GetComponent<EnemyData>();
+        animator = gameObject.GetComponent<Animator>();
+        rb2D = gameObject.GetComponent<Rigidbody2D>();
+        playerCombat = player.GetComponent<PlayerCombat>();
+        playerController = player.GetComponent<PlayerController>();
+        playerCombatController = player.GetComponent<PlayerCombatController>();
+    }
     public virtual void DamageEnemy()
     {
         CharacterData characterData = GameObject.FindWithTag("Player").GetComponent<CharacterDataReference>().characterData;

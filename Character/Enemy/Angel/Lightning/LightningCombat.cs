@@ -11,12 +11,8 @@ public class LightningCombat : EnemyCombat
     // Start is called before the first frame update
     void Start()
     {
-        enemyData = gameObject.GetComponent<EnemyData>();
+        CheckReferences();
         enemyData.InvokeEnemyData(10, 10, 20, 0.8f, 40, false, EnemyData.MonsterType.ANGEL_LIGHTNING);
-
-        animator = gameObject.GetComponent<Animator>();
-        playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
-        player = GameObject.FindWithTag("Player");
         boxCollider2D = gameObject.GetComponent<BoxCollider2D>();
         gameObjects = GameObject.FindGameObjectsWithTag("Enemy");
         for (int i = 0; i < gameObjects.Length; i++)

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GhostFlameCombat : EnemyCombat
@@ -21,18 +19,10 @@ public class GhostFlameCombat : EnemyCombat
     // Start is called before the first frame update
     void Start()
     {
-        enemyData = gameObject.GetComponent<EnemyData>();
+        CheckReferences();
         enemyData.InvokeEnemyData(40, 40, 1, 1, 10, true, EnemyData.MonsterType.GHOST_FLAME);
-
-        animator = gameObject.GetComponent<Animator>();
-
-        player = GameObject.FindWithTag("Player");
-        rb2D = gameObject.GetComponent<Rigidbody2D>();
         spriteRenderer = player.gameObject.GetComponent<SpriteRenderer>();
         characterData = player.GetComponent<CharacterDataReference>().characterData;
-        playerController = player.GetComponent<PlayerController>();
-        playerCombat = player.GetComponent<PlayerCombat>();
-
     }
 
     // Update is called once per frame

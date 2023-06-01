@@ -22,13 +22,8 @@ public class FireSkullCombat : EnemyCombat
     // Start is called before the first frame update
     void Start()
     {
-        enemyData = gameObject.GetComponent<EnemyData>();
+        CheckReferences();
         enemyData.InvokeEnemyData(60, 60, 30, 0.5f, 30, true, EnemyData.MonsterType.FIRE_SKULL);
-
-        playerCombat = GameObject.FindWithTag("Player").GetComponent<PlayerCombat>();
-        animator = gameObject.GetComponent<Animator>();
-        player = GameObject.FindWithTag("Player");
-        rb2D = gameObject.GetComponent<Rigidbody2D>();
         boxCollider2D = gameObject.GetComponent<BoxCollider2D>();
     }
 

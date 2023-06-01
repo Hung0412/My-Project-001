@@ -22,12 +22,8 @@ public class AngelCombat : EnemyCombat
     // Start is called before the first frame update
     void Start()
     {
-        enemyData = gameObject.GetComponent<EnemyData>();
+        CheckReferences();
         enemyData.InvokeEnemyData(40, 40, 20, 0.5f, 20, true, EnemyData.MonsterType.ANGEL);
-
-        animator = gameObject.GetComponent<Animator>();
-        player = GameObject.FindWithTag("Player");
-        playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
         spawnTimer = 0;
     }
 
@@ -37,6 +33,7 @@ public class AngelCombat : EnemyCombat
         FaceCharacter(gameObject, player);
         Attack_Fire();
     }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
