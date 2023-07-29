@@ -57,6 +57,7 @@ public class AngelCombat : EnemyCombat
             {
                 Destroy(spawnedBewareLightning);
             }
+
             spawnTimer = 0;
             hasSpawnedLightning = false;
             hasSpawnedBewareLightning = false;

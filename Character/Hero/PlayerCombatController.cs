@@ -35,7 +35,6 @@ public class PlayerCombatController : MonoBehaviour
     public Vector3 powerPunchAttackSize;    // The size of the power punch attack
     public float attackRange; // The range of the player's attacks
     public LayerMask enemyLayers; // The layers on which enemies are located
-
     // Start is called before the first frame update
     void Start()
     {
@@ -65,16 +64,17 @@ public class PlayerCombatController : MonoBehaviour
         /** Conditions to make player punch **/
 
         // Charge up punch by holding down W key
-        if (Input.GetKey(KeyCode.W) && hasPunched == false && hasCharged == false && hasKicked == false
-            && hasFlyKicked == false && hasFlyingKicked == false && hasCrouchKicked == false
-            && playerController.isJumping == false && playerController.isFalling == false && playerCombat.isPushingAway == false
-            && playerController.isHealing == false && playerController.isRolling == false && playerCombat.hasCollided == false)
+        if (Input.GetKey(KeyCode.W) && !hasPunched && !hasCharged && !hasKicked
+            && !hasFlyKicked && !hasFlyingKicked && !hasCrouchKicked
+            && !playerController.isJumping && !playerController.isFalling && !playerCombat.isPushingAway
+            && !playerController.isHealing && !playerController.isRolling && !playerController.isLedgeClimbing
+            && !playerCombat.hasCollided && !playerController.isWallClimbing && !playerController.isLedgeClimbing)
         {
             hasCharged = true;
             animator.SetBool(nameof(hasCharged), true);
         }
         // Spawn punch effect 3 when player velocity is low and punch is charged
-        if (hasCharged == true)
+        if (hasCharged)
         {
             if (playerController.rb2D.velocity.x > -0.5f && playerController.rb2D.velocity.x < 0.5f && hasSpawnPunchEffect3 == false)
             {
@@ -83,7 +83,7 @@ public class PlayerCombatController : MonoBehaviour
             }
         }
         // Release punch when W key is released and punch is charged
-        if (Input.GetKeyUp(KeyCode.W) && hasCharged == true && playerCombat.isPushingAway == false)
+        if (Input.GetKeyUp(KeyCode.W) && hasCharged && !playerCombat.isPushingAway)
         {
             // Destroy punch effect 3 and reset variables
 
@@ -114,7 +114,7 @@ public class PlayerCombatController : MonoBehaviour
         }
 
         // Attack enemies when power or normal punch is active and no enemies are hit yet, and also end punching after a delay
-        if (hasPowerPunched == true && playerCombat.hitEnemiesList.Count == 0)
+        if (hasPowerPunched && playerCombat.hitEnemiesList.Count == 0)
         {
             playerCombat.Attack2(powerPunchAttackPoint, powerPunchAttackSize, 0, enemyLayers);
             AddHitEnemiesToList();  // Add hit enemies to the list
@@ -122,7 +122,7 @@ public class PlayerCombatController : MonoBehaviour
             animator.SetFloat("Punch Speed", 0.5f);
             Invoke(nameof(EndPunch), 0.8f);
         }
-        if (hasNormalPunched == true && playerCombat.hitEnemiesList.Count == 0)
+        if (hasNormalPunched && playerCombat.hitEnemiesList.Count == 0)
         {
             playerCombat.Attack1(kickAttackPoint, 1.8f, enemyLayers);
             AddHitEnemiesToList();
@@ -132,13 +132,13 @@ public class PlayerCombatController : MonoBehaviour
         }
 
         // Increment punchTimer when punch is charging and player is not jumping or falling
-        if (hasCharged == true && playerController.isJumping == false && playerController.isFalling == false)
+        if (hasCharged && !playerController.isJumping && !playerController.isFalling)
         {
             punchTimer += Time.deltaTime;
         }
 
         // Reset punchTimer and cancel charge when player jumps
-        if (playerController.isJumping == true)
+        if (playerController.isJumping)
         {
             punchTimer = 0;
             hasCharged = false;
@@ -146,7 +146,7 @@ public class PlayerCombatController : MonoBehaviour
         }
 
         //Reset punchTimer and destroy punch effect 3
-        if (playerCombat.isPushingAway == true)
+        if (playerCombat.isPushingAway)
         {
             punchTimer = 0;
             hasCharged = false;
@@ -162,13 +162,13 @@ public class PlayerCombatController : MonoBehaviour
         /** This function sets up the positions where punch effects will be spawned based on the player's facing direction **/
 
         // If the player is facing right or left, set the punch effect positions accordingly
-        if (playerController.isFacing == true)
+        if (playerController.isFacing)
         {
             spawnPunchEffectPos1 = gameObject.transform.position + new Vector3(2f, -1.6f, 0);
             spawnPunchEffectPos2 = gameObject.transform.position + new Vector3(5, 0, 0);
             spawnPunchEffectPos3 = gameObject.transform.position + new Vector3(-1.55f, -0.8f, 0);
         }
-        else if (playerController.isFacing == false)
+        else if (!playerController.isFacing)
         {
             spawnPunchEffectPos1 = gameObject.transform.position - new Vector3(2f, 1.6f, 0);
             spawnPunchEffectPos2 = gameObject.transform.position - new Vector3(5, 0, 0);
@@ -217,35 +217,36 @@ public class PlayerCombatController : MonoBehaviour
         /** This function is called when the player presses the "E" key, and triggers a kick attack if certain conditions are met. **/
 
         // Check if the "E" key is pressed and the player is not currently performing any other attacks.
-        if (Input.GetKeyDown(KeyCode.E) && hasPunched == false && hasCharged == false && hasKicked == false
-            && hasFlyKicked == false && hasFlyingKicked == false && hasCrouchKicked == false
-            && playerCombat.isPushingAway == false && playerController.isHealing == false && playerController.isRolling == false && playerCombat.hasCollided == false)
+        if (Input.GetKeyDown(KeyCode.E) && !hasPunched && !hasCharged && !hasKicked
+            && !hasFlyKicked && !hasFlyingKicked && !hasCrouchKicked
+            && !playerCombat.isPushingAway && !playerController.isHealing && !playerController.isRolling
+            && !playerCombat.hasCollided && !playerController.isWallClimbing && !playerController.isLedgeClimbing)
         {
             punchTimer = 0; //Reset punchTimer
 
             // If the player is not jumping or crouching, perform a regular kick attack.
-            if (playerController.isJumping == false && playerController.isCrouching == false)
+            if (!playerController.isJumping && !playerController.isCrouching)
             {
                 hasKicked = true;
                 animator.SetBool(nameof(hasKicked), true);
                 Invoke(nameof(EndKick), 0.5f);
             }
             // If the player is jumping and not walking, perform a flying kick attack.
-            else if (playerController.isJumping == true && playerController.isWalking == false)
+            else if (playerController.isJumping && !playerController.isWalking)
             {
                 hasFlyKicked = true;
                 animator.SetBool(nameof(hasFlyKicked), true);
                 Invoke(nameof(EndFlyKick), 0.5f);
             }
             // If the player is jumping and walking, perform a running flying kick attack.
-            else if (playerController.isJumping == true && playerController.isWalking == true)
+            else if (playerController.isJumping && playerController.isWalking)
             {
                 hasFlyingKicked = true;
                 animator.SetBool(nameof(hasFlyingKicked), true);
                 Invoke(nameof(EndFlyingKick), 0.5f);
             }
             // If the player is crouching and not jumping, perform a crouch kick attack.
-            else if (playerController.isCrouching == true && playerController.isJumping == false)
+            else if (playerController.isCrouching && !playerController.isJumping)
             {
                 hasCrouchKicked = true;
                 animator.SetBool(nameof(hasCrouchKicked), true);
@@ -254,7 +255,7 @@ public class PlayerCombatController : MonoBehaviour
         }
 
         // If the player successfully performed a kick attack and did not hit any enemies, attempt to hit enemies within the attack range.
-        if ((hasKicked == true || hasFlyKicked == true || hasFlyingKicked == true || hasCrouchKicked == true) && playerCombat.hitEnemiesList.Count == 0)
+        if ((hasKicked || hasFlyKicked || hasFlyingKicked || hasCrouchKicked) && playerCombat.hitEnemiesList.Count == 0)
         {
             playerCombat.Attack1(kickAttackPoint, 1.8f, enemyLayers);
             AddHitEnemiesToList();

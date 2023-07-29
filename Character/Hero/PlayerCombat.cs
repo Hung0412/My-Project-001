@@ -1,6 +1,6 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Collections;
 public class PlayerCombat : MonoBehaviour
 {
     private CharacterData characterData;
@@ -121,12 +121,15 @@ public class PlayerCombat : MonoBehaviour
                 case EnemyData.MonsterType.FIRE_SKULL:
                     enemy.GetComponent<FireSkullCombat>().DamageEnemy();
                     break;
+                case EnemyData.MonsterType.DRAGON:
+                    enemy.GetComponent<DragonCombat>().DamageEnemy();
+                    break;
             }
         }
     }
     #endregion
     #region Player's functions when being damaged
-        #region Adjust player health value
+    #region Adjust player health value
     public void DamageCharacter(Collision2D collision)
     {
         EnemyData enemyData = collision.gameObject.GetComponent<EnemyData>();
@@ -143,8 +146,8 @@ public class PlayerCombat : MonoBehaviour
         yield return new WaitForSeconds(2);
         canDamage = true;
     }
-        #endregion
-        #region Push Player away when collide with enemy
+    #endregion
+    #region Push Player away when collide with enemy
     private void PushPlayer(Collision2D collision)
     {
         pushForce = collision.gameObject.GetComponent<EnemyData>().PushForce;
@@ -190,8 +193,8 @@ public class PlayerCombat : MonoBehaviour
             }
         }
     }
-        #endregion
-        #region Spawn Hurt Effects when being attacked
+    #endregion
+    #region Spawn Hurt Effects when being attacked
     private void SpawnHurtEffect()
     {
         if (hasSpawned == false)
@@ -211,8 +214,8 @@ public class PlayerCombat : MonoBehaviour
             isPushingAway = false;
         }
     }
-        #endregion
-        #region Destroy Player when Health Value equal 0
+    #endregion
+    #region Destroy Player when Health Value equal 0
     public void DestroyCharacter()
     {
         gameObject.SetActive(false);
@@ -225,6 +228,6 @@ public class PlayerCombat : MonoBehaviour
         UnityEditor.EditorApplication.isPlaying = false;
 #endif
     }
-        #endregion
+    #endregion
     #endregion
 }

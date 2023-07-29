@@ -21,22 +21,11 @@ public class SkeletonCombat : EnemyCombat
             Invoke(nameof(Attack_FollowCharacter), 0.9f);
             FaceCharacter(gameObject, player);
         }
-
     }
     public override void DamageEnemy()
     {
-        CharacterData characterData = GameObject.FindWithTag("Player").GetComponent<CharacterDataReference>().characterData;
-        enemyData.CurrentHealthValue -= characterData.DamageValue;
-        if (enemyData.CurrentHealthValue <= 0)
-        {
-            isDying = true;
-            animator.SetBool(nameof(isDying), true);
-            Invoke(nameof(DestroyEnemy), enemyData.DestroyTime);
-            boxCollider2D.isTrigger = true;
-            playerCombat.hasCollided = false;
-            hasAttacked = false;
-            animator.SetBool(nameof(hasAttacked), false);
-        }
+        base.DamageEnemy();
+
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -53,7 +42,7 @@ public class SkeletonCombat : EnemyCombat
     {
         if (playerController.isRolling == false)
         {
-            if (boxCollider2D.isTrigger == false && playerController.isOnGround == true)
+            if (boxCollider2D.isTrigger == false && playerController.isOnGround == true && rb2D.constraints == RigidbodyConstraints2D.None)
             {
                 hasAttacked = true;
                 animator.SetBool(nameof(hasAttacked), true);

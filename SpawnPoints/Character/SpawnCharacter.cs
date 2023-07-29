@@ -1,5 +1,4 @@
 using UnityEngine;
-using Cinemachine;
 public class SpawnCharacter : MonoBehaviour
 {
     private PlayerController playerController;
@@ -26,7 +25,7 @@ public class SpawnCharacter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        CamFollowPlayer();
+        //CamFollowPlayer();
         SpotLightFollowPlayer();
     }
     private void CamFollowPlayer()

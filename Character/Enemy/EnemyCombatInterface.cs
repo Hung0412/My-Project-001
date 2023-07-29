@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public interface EnemyCombatInterface
+public interface IEnemyCombatInterface
 {
     void CheckReferences();
     void DamageEnemy();

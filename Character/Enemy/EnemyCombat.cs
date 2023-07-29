@@ -1,5 +1,5 @@
 using UnityEngine;
-public abstract class EnemyCombat : MonoBehaviour, EnemyCombatInterface
+public abstract class EnemyCombat : MonoBehaviour, IEnemyCombatInterface
 {
     //REFERENCES
     protected GameObject player;
@@ -9,6 +9,7 @@ public abstract class EnemyCombat : MonoBehaviour, EnemyCombatInterface
     protected PlayerCombat playerCombat;
     protected PlayerController playerController;
     protected PlayerCombatController playerCombatController;
+
     //VARIABLES
     public bool isDying = false;
     public bool isFacingCharacter = false;

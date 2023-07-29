@@ -45,7 +45,6 @@ public class FireSkullCombat : EnemyCombat
     {
         base.DestroyEnemy();
     }
-
     private void Attack_FollowCharacter()
     {
         if (isDying == false)

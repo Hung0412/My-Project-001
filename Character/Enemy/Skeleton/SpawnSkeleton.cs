@@ -34,7 +34,7 @@ public class SpawnSkeleton : MonoBehaviour
         {
             if (player.CompareTag("Player") && hasSpawned == false)
             {
-                spawnedSkeleton = Instantiate(skeletonPrefabs, spawnPoint.position, Quaternion.identity);
+                spawnedSkeleton = Instantiate(skeletonPrefabs, spawnPoint.position + new Vector3(0, 1f, 0), Quaternion.identity);
                 hasSpawned = true;
             }
         }

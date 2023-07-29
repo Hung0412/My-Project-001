@@ -16,7 +16,8 @@ public class HealthBar : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        healthBackground.fillAmount = characterData.CurrentHealthValue / characterData.MaxHealthValue;
-        healingChargeBackground.fillAmount = characterData.CurrentHealingChargeValue / characterData.MaxHealingChargeValue;
+        float lerpSpeed = 5;
+        healthBackground.fillAmount = Mathf.Lerp(healthBackground.fillAmount, characterData.CurrentHealthValue / characterData.MaxHealthValue, Time.deltaTime * lerpSpeed);
+        healingChargeBackground.fillAmount = Mathf.Lerp(healingChargeBackground.fillAmount, characterData.CurrentHealingChargeValue / characterData.MaxHealingChargeValue, Time.deltaTime * lerpSpeed);
     }
 }
