@@ -50,7 +50,7 @@ public class LightningCombat : EnemyCombat
         {
             if (ob.CompareTag("Enemy") || ob.CompareTag("Ground") || ob.CompareTag("Player"))
             {
-                DamageEnemy();
+                Debug.Log("s");
             }
         }
     }

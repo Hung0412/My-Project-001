@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SpawnGhostFear : MonoBehaviour
@@ -32,7 +30,7 @@ public class SpawnGhostFear : MonoBehaviour
         hitPlayer = Physics2D.OverlapCircleAll(spawnPoint.position, detectPlayer, playerLayer);
         foreach (Collider2D player in hitPlayer)
         {
-            if (player.CompareTag("Player") && hasSpawned == false)
+            if (player.CompareTag("Player") && !hasSpawned)
             {
                 spawnedGhostFear = Instantiate(ghostFearPrefab, spawnPoint.position, Quaternion.identity);
                 hasSpawned = true;

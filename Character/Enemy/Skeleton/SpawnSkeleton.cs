@@ -32,7 +32,7 @@ public class SpawnSkeleton : MonoBehaviour
         hitPlayer = Physics2D.OverlapCircleAll(spawnPoint.position, detectPlayerRange, playerLayer);
         foreach (Collider2D player in hitPlayer)
         {
-            if (player.CompareTag("Player") && hasSpawned == false)
+            if (player.CompareTag("Player") && !hasSpawned)
             {
                 spawnedSkeleton = Instantiate(skeletonPrefabs, spawnPoint.position + new Vector3(0, 1f, 0), Quaternion.identity);
                 hasSpawned = true;

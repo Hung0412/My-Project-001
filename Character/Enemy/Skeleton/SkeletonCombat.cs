@@ -16,7 +16,7 @@ public class SkeletonCombat : EnemyCombat
     // Update is called once per frame
     void Update()
     {
-        if (playerController.isRolling == false)
+        if (!playerController.isRolling && !playerController.isJumping && player.transform.position != gameObject.transform.position)
         {
             Invoke(nameof(Attack_FollowCharacter), 0.9f);
             FaceCharacter(gameObject, player);
@@ -40,22 +40,23 @@ public class SkeletonCombat : EnemyCombat
     }
     private void Attack_FollowCharacter()
     {
-        if (playerController.isRolling == false)
+        if (!playerController.isRolling && !playerController.isJumping)
         {
-            if (boxCollider2D.isTrigger == false && playerController.isOnGround == true && rb2D.constraints == RigidbodyConstraints2D.None)
+            if (!boxCollider2D.isTrigger)
             {
                 hasAttacked = true;
                 animator.SetBool(nameof(hasAttacked), true);
                 Vector2 direction = player.transform.position - transform.position;
-                rb2D.velocity = new Vector2(direction.x, 0).normalized * moveForce;
+
+                if (isDying == false)
+                    rb2D.velocity = new Vector2(direction.x, 0).normalized * moveForce;
             }
-            else if (boxCollider2D.isTrigger == true)
+            else if (boxCollider2D.isTrigger)
             {
                 rb2D.gravityScale = 0;
                 rb2D.constraints = RigidbodyConstraints2D.FreezePosition;
                 rb2D.constraints = RigidbodyConstraints2D.FreezeRotation;
             }
         }
-
     }
 }

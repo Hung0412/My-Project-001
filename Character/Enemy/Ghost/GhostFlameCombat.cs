@@ -58,7 +58,7 @@ public class GhostFlameCombat : EnemyCombat
         {
             if (player.CompareTag("Player"))
             {
-                if (hasAttacked == false)
+                if (!hasAttacked)
                 {
                     hasAttacked = true;
                     animator.SetBool(nameof(hasAttacked), true);

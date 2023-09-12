@@ -57,7 +57,7 @@ public class FireSkullCombat : EnemyCombat
                     attackOneTime = true;
                 }
             }
-            if (attackOneTime == true && isDying == false)
+            if (attackOneTime && !isDying)
             {
                 hasAttacked = true;
                 animator.SetBool(nameof(hasAttacked), true);
@@ -92,9 +92,9 @@ public class FireSkullCombat : EnemyCombat
                         }
                     }
                 }
-                else if (hasPlayerRight == true)
+                else if (hasPlayerRight)
                 {
-                    if (takeNewPos == true)
+                    if (takeNewPos)
                     {
                         playerStartPos = player.transform.position;
                         takeNewPos = false;

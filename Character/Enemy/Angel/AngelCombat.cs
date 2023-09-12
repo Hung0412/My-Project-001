@@ -33,7 +33,6 @@ public class AngelCombat : EnemyCombat
         FaceCharacter(gameObject, player);
         Attack_Fire();
     }
-
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
@@ -49,7 +48,6 @@ public class AngelCombat : EnemyCombat
     }
     private void Attack_Fire()
     {
-
         hitPlayer = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, playerLayer);
         if (hitPlayer.Length == 0 || spawnTimer >= spawnResetTimer)
         {

@@ -31,7 +31,7 @@ public class WizardCombat : EnemyCombat
     }
     private void Attack_Fire()
     {
-        if (hasAttacked == false && isDying == false)
+        if (!hasAttacked && !isDying)
         {
             hitPlayer = Physics2D.OverlapCircleAll(fireAttackPoint.position, fireRange, playerLayer);
             if (hitPlayer.Length == 0)

@@ -76,6 +76,7 @@ public class PlayerCombat : MonoBehaviour
         }
     }
     #endregion
+
     #region Player's Attack functions
     public void Attack1(Transform attackPoint, float attackRange, LayerMask characterLayers)
     {
@@ -128,6 +129,7 @@ public class PlayerCombat : MonoBehaviour
         }
     }
     #endregion
+
     #region Player's functions when being damaged
     #region Adjust player health value
     public void DamageCharacter(Collision2D collision)

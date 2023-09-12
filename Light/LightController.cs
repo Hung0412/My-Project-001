@@ -19,13 +19,13 @@ public class LightController : MonoBehaviour
         AdjustPlayerSpotLight2D();
     }
     private void AdjustPlayerSpotLight2D()
-    {   
-        if (playerController.isRunning == true)
+    {
+        if (playerController.isRunning)
         {
             spotLight2D.pointLightInnerRadius = 5;
             spotLight2D.pointLightOuterRadius = 15;
         }
-        else if (playerController.isRunning == false)
+        else if (!playerController.isRunning)
         {
             spotLight2D.pointLightInnerRadius = 3;
             spotLight2D.pointLightOuterRadius = 7;

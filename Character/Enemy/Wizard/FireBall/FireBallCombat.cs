@@ -19,14 +19,14 @@ public class FireBallCombat : EnemyCombat
     }
     private void Attack_FollowPlayer()
     {
-        if (circleCollider.isTrigger == false)
+        if (!circleCollider.isTrigger)
         {
             Vector2 direction = player.transform.position - transform.position;
             rb2D.velocity = new Vector2(direction.x, direction.y).normalized * fireForce;
             float fireballRotation = Mathf.Atan2(-direction.y, -direction.x) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.Euler(0, 0, fireballRotation);
         }
-        else if (circleCollider.isTrigger == true)
+        else if (circleCollider.isTrigger)
         {
             rb2D.constraints = RigidbodyConstraints2D.FreezePosition;
             rb2D.constraints = RigidbodyConstraints2D.FreezeRotation;

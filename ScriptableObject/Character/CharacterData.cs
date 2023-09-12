@@ -1,5 +1,5 @@
-using UnityEngine;
 using System;
+using UnityEngine;
 [CreateAssetMenu]
 public class CharacterData : ScriptableObject
 {
@@ -25,7 +25,10 @@ public class CharacterData : ScriptableObject
     public float CurrentHealthValue
     {
         get { return currentHealthValue; }
-        set { currentHealthValue = Mathf.Max(0, Mathf.Min(value, MaxHealthValue)); }
+        set
+        {
+            currentHealthValue = Mathf.Max(0, Mathf.Min(value, MaxHealthValue));
+        }
     }
 
     public float MaxHealingChargeValue

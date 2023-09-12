@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
     private CharacterData characterData;
     [HideInInspector]
     public Rigidbody2D rb2D;
+    private PhysicsMaterial2D physicsMaterial2D;
     [HideInInspector]
     public Animator animator;
     private PlayerCombat playerCombat;
@@ -59,7 +60,6 @@ public class PlayerController : MonoBehaviour
     public bool fDecrease = true, fIncrease = false;
     #endregion
     #region Player Climp References & Values
-    public bool isNearWall = false;
     public bool isWallClimbing = false;
     public bool isLedgeClimbing = false;
     public bool hasLedgeClimb = false;
@@ -73,10 +73,14 @@ public class PlayerController : MonoBehaviour
     public Transform beneathWallCheckPoint;
     public float beneathWallCheckRange;
 
-    public Transform wallCheckPoint;
-    public Vector3 wallCheckRange;
     #endregion
     public bool isHealing = false; //Whether the player is currently medizing
+
+    private Rigidbody2D GetRb2D()
+    {
+        return rb2D;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -85,6 +89,7 @@ public class PlayerController : MonoBehaviour
             // Get references to the player's Rigidbody2D, Animator, and PlayerCombat components
             characterData = GetComponent<CharacterDataReference>().characterData;
             rb2D = GetComponent<Rigidbody2D>();
+            physicsMaterial2D = rb2D.sharedMaterial;
             animator = GetComponent<Animator>();
             playerCombat = GetComponent<PlayerCombat>();
             playerCombatController = GetComponent<PlayerCombatController>();
@@ -127,7 +132,6 @@ public class PlayerController : MonoBehaviour
         Gizmos.DrawRay(climbLedgePoint.position, Vector3.right);
         Gizmos.DrawRay(detectWallClimbCheckPoint.position, Vector3.right);
         Gizmos.DrawRay(beneathWallCheckPoint.position, Vector3.up);
-        Gizmos.DrawWireCube(wallCheckPoint.position, wallCheckRange);
     }
     #endregion
     #region  Player's OnCollision or OnTrigger Functions
@@ -147,11 +151,6 @@ public class PlayerController : MonoBehaviour
 
             isFalling = false;
             animator.SetBool(nameof(isFalling), false);
-        }
-        else if (collision.gameObject.layer == 12 && isJumping)
-        {
-            Debug.Log("a");
-            playerMovement = 0;
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
@@ -380,7 +379,7 @@ public class PlayerController : MonoBehaviour
     private void CharacterRoll()
     {
         if (Input.GetKeyDown(KeyCode.Q) && isCrouching && !isRolling && isOnGround && !playerCombat.hasCollided && !playerCombat.isPushingAway
-            && !playerCombatController.hasCrouchKicked && !playerCombatController.hasCharged)
+            && !playerCombatController.hasCrouchKicked && !playerCombatController.hasCharged && !isHealing)
         {
             isRolling = true;
             animator.SetBool(nameof(isRolling), true);
@@ -544,12 +543,11 @@ public class PlayerController : MonoBehaviour
         rb2D.constraints = RigidbodyConstraints2D.None;
         rb2D.constraints = RigidbodyConstraints2D.FreezeRotation;
     }
-
     #endregion
     #region  Player's Heal Functions
     private void CharacterHeal()
     {
-        if (Input.GetKeyDown(KeyCode.R) && characterData.CurrentHealingChargeValue == characterData.MaxHealingChargeValue
+        if (Input.GetKeyDown(KeyCode.R) && characterData.CurrentHealingChargeValue >= characterData.MaxHealingChargeValue
         && isOnGround && !playerCombatController.hasPunched && !playerCombatController.hasKicked)
         {
             characterData.HealthValue = 30;
