@@ -502,7 +502,7 @@ public class PlayerController : MonoBehaviour
         wallRcHit2D = Physics2D.Raycast(detectWallClimbCheckPoint.position, transform.right, detectWallClimbCheckRange, wallLayer);
         beneathWallCol2D = Physics2D.Raycast(beneathWallCheckPoint.position, transform.up, beneathWallCheckRange, wallLayer);
 
-        if (wallRcHit2D && !climbLedgeRcHit2D && !beneathWallCol2D)
+        if (wallRcHit2D && !climbLedgeRcHit2D && !beneathWallCol2D && !playerCombat.isPushingAway)
         {
             isWallClimbing = true;
         }

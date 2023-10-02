@@ -168,6 +168,8 @@ public class PlayerCombat : MonoBehaviour
         }
 
         rb2D.AddForce(pushDirection * pushForce, ForceMode2D.Impulse);
+
+
     }
     private void SetConditionsDependOnIsPushingAway()
     {
