@@ -1,4 +1,5 @@
 using UnityEngine;
+
 public class SpawnCharacter : MonoBehaviour
 {
     private PlayerController playerController;
@@ -31,10 +32,9 @@ public class SpawnCharacter : MonoBehaviour
     }
     private void CamFollowPlayer()
     {
-        Vector3 camPos = mainCam.transform.position;
-        camPos.x = spawnedPlayer.transform.position.x;
-        //mainCam.transform.position = new Vector3(Mathf.Lerp(mainCam.transform.position.x, camPos.x, 1 * Time.deltaTime), 7.2f, -40);
-        mainCam.transform.position = camPos;
+        float smoothSpeed = 0.5f;
+        Vector3 targetCamPos = new Vector3(spawnedPlayer.transform.position.x, 7.2f, -40);
+        mainCam.transform.position = Vector3.Lerp(mainCam.transform.position, targetCamPos, smoothSpeed * Time.deltaTime);
     }
     private void SpotLightFollowPlayer()
     {
